@@ -1,3 +1,4 @@
+# 예측값과 실제값을 비교하기 위한 코드
 __author__ = 'will'
 
 import pickle

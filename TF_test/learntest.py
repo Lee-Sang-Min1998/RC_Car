@@ -27,11 +27,11 @@ model.add(Dense(1))
 
 model.compile(loss='mean_squared_error', optimizer='adam')
 
-model.fit(trX, trY, epochs=50, batch_size=1) # 학습
+model.fit(trX, trY, epochs=3, batch_size=1) # 학습
 
 Y_prediction = model.predict(teX).flatten() # test 예측값
 
-for i in range(1000):
+for i in range(len(teY)):
     label = teY[i]
     pred = Y_prediction[i]
     print("label:{:.2f}, pred:{:.2f}".format(label, pred)) # 정답과 예측값 비교
@@ -44,5 +44,5 @@ def get_direction(img):
     return ret
 
 # Predict direction with single image
-dir=get_direction(teX[10]) # 이미지로 예측
+dir=get_direction(teX[len(teX)-1]) # 이미지로 예측
 print(dir[0][0])
