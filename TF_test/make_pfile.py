@@ -38,5 +38,5 @@ for (root, directories, files) in os.walk(dir_path):
 # print(np.array(filtering_image))
 # print(np.array(filtering_image).shape)
 
-with open('learning_image.p', 'wb') as file:    # james.p 파일을 바이너리 쓰기 모드(wb)로 열기
+with open('learning_image1.p', 'wb') as file:    # james.p 파일을 바이너리 쓰기 모드(wb)로 열기
     pickle.dump(total_data, file)
