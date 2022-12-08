@@ -27,7 +27,8 @@ for (root, directories, files) in os.walk(dir_path):
         image = cv2.imread(file_path) # 이미지 가져오기
 
         cv2.imshow('disp',np.array(cv2.resize(image,dsize=(280,280), interpolation=cv2.INTER_LINEAR)))
-        cv2.waitKey(0)
+        cv2.waitKey(1000)
+        cv2.destroyWindow('disp') 
 
         direction = float(input("direction: "))
         settingValue(direction, image)
@@ -38,5 +39,5 @@ for (root, directories, files) in os.walk(dir_path):
 # print(np.array(filtering_image))
 # print(np.array(filtering_image).shape)
 
-with open('learning_image1.p', 'wb') as file:    # james.p 파일을 바이너리 쓰기 모드(wb)로 열기
+with open('learning_image10.p', 'wb') as file:    # james.p 파일을 바이너리 쓰기 모드(wb)로 열기
     pickle.dump(total_data, file)

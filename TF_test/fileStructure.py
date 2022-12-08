@@ -2,7 +2,7 @@
 import pickle
 import numpy as np
 
-data = pickle.load( open( "learning_image.p", "rb" ), encoding="latin1" ) # test 이미지 가져오기
+data = pickle.load( open( "Output.p", "rb" ), encoding="latin1" ) # test 이미지 가져오기
 n_images = len(data)
 
 print(np.array(data).shape)

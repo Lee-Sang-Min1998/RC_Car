@@ -6,7 +6,7 @@ import cv2
 import time
 import numpy as np
 
-data = pickle.load( open( "trainingdata.p", "rb" ), encoding="latin" ) # test 이미지 가져오기
+data = pickle.load( open( "Output.p", "rb" ), encoding="latin" ) # test 이미지 가져오기
 n_images = len(data)
 print(n_images)
 test, training = data[0:int(n_images/3)], data[int(n_images/3):]

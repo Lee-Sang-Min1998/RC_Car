@@ -1,13 +1,17 @@
 # p 파일 병합
 
 import pickle
-with open('learning_image.p', 'rb') as file:
+
+with open('Output.p', 'rb') as file:
+    input0 = pickle.load(file)
+
+with open('learning_image20.p', 'rb') as file:
     input1 = pickle.load(file)
+input0 += input1
 
-with open('learning_image1.p', 'rb') as file:
+with open('learning_image21.p', 'rb') as file:
     input2 = pickle.load(file)
-
-input1 += input2 
+input0 += input2 
 
 with open('Output.p', 'wb') as file:
-    pickle.dump(input1, file)
+    pickle.dump(input0, file)

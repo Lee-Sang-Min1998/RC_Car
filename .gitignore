@@ -3,3 +3,4 @@ image/
 
 # p File
 *.p
+!Output.p
