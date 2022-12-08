@@ -5,6 +5,7 @@ __author__ = 'will'
 
 import numpy as np
 import cv2
+import tensorflow as tf
 
 from picamera.array import PiRGBArray
 from picamera import PiCamera
@@ -45,6 +46,7 @@ class RC_Car_Interface():
         img2 = cv2.resize(img2,(16,16), interpolation=cv2.INTER_AREA )
 #        cv2.imshow("Image", img2)
 #        cv2.waitKey(0)
+        img2 = tf.expand_dims(img2, axis=-1)
         return img2
 
     def stop(self):     # 로봇 정지

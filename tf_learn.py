@@ -2,8 +2,11 @@
 
 __author__ = 'will'
 
+#from tensorflow.keras.models import Sequential
+#from tensorflow.keras.layers import *
 from keras.models import Sequential
 from keras.layers import *
+
 #from sklearn.model_selection import train_test_split
 
 import numpy as np
@@ -50,18 +53,19 @@ class DNN_Driver():
         self.model.add(Dense(2))
 
         self.model.compile(loss='mean_squared_error', optimizer='adam')
-
+        
+        self.trX = tf.convert_to_tensor(self.trX)
+        self.trY = tf.convert_to_tensor(self.trY)
         self.model.fit(self.trX, self.trY, epochs=2, batch_size=1) # 학습
         return
 
     def predict_direction(self, img): # 방향 예측
         print(img.shape)
 #        img = np.array([np.reshape(img,img.shape**2)])
+
         ret =  self.model.predict(np.array([img]))
         return ret
 
     def get_test_img(self): # test 이미지 받아오기
         img = self.teX[10]
         return img
-
-        

@@ -48,7 +48,7 @@ class SelfDriving:
 
             img = self.rc_car_cntl.get_image_from_camera() # 이미지 받아오기
 # predict_direction wants [256] array, not [16,16]. Thus call np.reshape to convert [16,16] to [256] array
-            img = np.reshape(img,img.shape[0]**2)
+            #img = np.reshape(img,img.shape[0]**2)
 
             direction = self.dnn_driver.predict_direction(img)         # 이미지를 통한 방향 예측
             print(direction[0][0])
