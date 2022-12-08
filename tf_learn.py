@@ -3,7 +3,7 @@
 __author__ = 'will'
 
 from keras.models import Sequential
-from keras.layers import Dense
+from keras.layers import *
 #from sklearn.model_selection import train_test_split
 
 import numpy as np
@@ -29,9 +29,25 @@ class DNN_Driver():
         tf.random.set_seed(seed) # random 값
 
         self.model=Sequential() # 학습 모델 설정
-        self.model.add(Dense(512, input_dim=np.shape(self.trX)[1], activation='relu')) # 입력층
-        self.model.add(Dense(64, activation='relu')) # 은닉층
-        self.model.add(Dense(1)) # 출력층
+
+        #print(np.array(trX).shape)
+        self.trX = tf.expand_dims(self.trX, axis=-1)
+        self.trX = tf.image.convert_image_dtype(self.trX, tf.float32)
+        #print(np.array(trX).shape)
+
+        # model.add(Dense(512, activation='relu'))
+        self.model.add(Conv2D(16, (2, 2)))
+        self.model.add(Activation('softmax'))
+        self.model.add(MaxPooling2D(pool_size=(2, 2)))
+
+        self.model.add(Conv2D(16, (2, 2)))
+        self.model.add(Activation('relu'))
+        self.model.add(MaxPooling2D(pool_size=(2, 2)))
+
+        self.model.add(Flatten())  # 이전 CNN 레이어에서 나온 3차원 배열은 1차원으로 뽑아줍니다
+        self.model.add(Dense(64))
+        self.model.add(Dropout(0.5))
+        self.model.add(Dense(2))
 
         self.model.compile(loss='mean_squared_error', optimizer='adam')
 
