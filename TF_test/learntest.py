@@ -9,6 +9,7 @@ from keras.layers import MaxPooling2D
 from keras.layers import Dropout
 
 from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import OneHotEncoder
 
 import numpy as np
 import tensorflow as tf
@@ -25,46 +26,50 @@ seed = 0
 np.random.seed(seed)
 tf.random.set_seed(seed)
 
-model=Sequential() # 학습 모델
+# 파라미터
+classes = 3  # 클래스 수 결정
+epochs_val = 30  # epoch 결정
 
-print(np.array(trX).shape)
-trX = tf.expand_dims(trX, axis=-1)
-trX = tf.image.convert_image_dtype(trX, tf.float32)
-print(np.array(trX).shape)
+# channel 차원 추가
+trX = trX.reshape(trX.shape[0], 16, 16, 1)
+teX = teX.reshape(teX.shape[0], 16, 16, 1)
 
-# model.add(Dense(512, activation='relu'))
-model.add(Conv2D(16, (2, 2)))
-model.add(Activation('softmax'))
+# 원핫인코딩
+enc = OneHotEncoder()
+enc.fit(trY.reshape(-1, 1))
+trY_onehot = enc.transform(trY.reshape(-1, 1)).toarray()
+teY_onehot = enc.transform(teY.reshape(-1, 1)).toarray()
+
+# 모델 설정
+model = Sequential()
+model.add(Conv2D(32, (3, 3), padding='same', input_shape=trX.shape[1:], activation='tanh'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
 
-model.add(Conv2D(16, (2, 2)))
-model.add(Activation('relu'))
+model.add(Conv2D(64, (3, 3), padding='same', activation='tanh'))
 model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Dropout(0.25))
 
-model.add(Flatten())  # 이전 CNN 레이어에서 나온 3차원 배열은 1차원으로 뽑아줍니다
-model.add(Dense(64))
+model.add(Flatten())
+model.add(Dense(1024, activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(2))
+model.add(Dense(classes, activation='softmax'))
 
-model.compile(loss='mean_squared_error', optimizer='adam')
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
-model.fit(trX, trY, epochs=50, batch_size=1) # 학습
+# 학습
+model.fit(trX, trY_onehot, epochs=epochs_val, batch_size=1)
 
-Y_prediction = model.predict(teX).flatten() # test 예측값
+# 예측
+Y_prediction = model.predict(teX)
 
-print("Accuracy: ", model.evaluate(teX, teY))
-for i in range(len(teY)):
-    label = teY[i]
-    pred = Y_prediction[i]
-    print("label:{:.2f}, pred:{:.2f}".format(label, pred)) # 정답과 예측값 비교
+# 비교
+for i in range(teX.shape[0]):
+    ans = int(teY[i])
+    pred_onehot = Y_prediction[i]
+    pred = (np.argmax(pred_onehot, 0)-1)
+    print(f"label: {ans:2d}, predict: {pred:2d}")
 
 
-def get_direction(img): 
-     # print(img.shape)
-#    img = np.array([np.reshape(img,img.shape**2)])
-    ret =  model.predict(np.array([img])) # 이미지 예측
-    return ret
+model.evaluate(teX, teY_onehot)
 
-# Predict direction with single image
-dir=get_direction(teX[len(teX)-1]) # 이미지로 예측
-print("last image predict: ", dir[0][0])
