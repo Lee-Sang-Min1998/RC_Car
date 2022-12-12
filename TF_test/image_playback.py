@@ -9,7 +9,7 @@ import numpy as np
 data = pickle.load( open( "Output.p", "rb" ), encoding="latin" ) # test 이미지 가져오기
 n_images = len(data)
 print(n_images)
-test, training = data[0:int(n_images/3)], data[int(n_images/3):]
+test, training = data[0:int(n_images/4)], data[int(n_images/4):]
 
 
 #print (data[4200])
