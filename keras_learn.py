@@ -70,6 +70,7 @@ class CNN_Driver():
         # learning
         self.model.fit(self.trX, trY_onehot, epochs=nb_epochs, batch_size=1)
         print('=' * 100)
+        self.model.save("rc_car_model")
         return
 
     def predict_direction(self, img):
@@ -81,3 +82,8 @@ class CNN_Driver():
     def get_test_img(self):
         img = self.teX[150]
         return img
+
+    def load_model(self):
+        self.model = tf.keras.models.load_model("rc_car_model")
+
+CNN_Driver.keras_learn()

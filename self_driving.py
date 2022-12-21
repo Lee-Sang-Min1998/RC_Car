@@ -20,8 +20,9 @@ class SelfDriving:
         self.rc_car_cntl.set_right_speed(0)
         self.velocity = 0                       # 속도
         self.direction = 0                      # 방향
-        self.cnn_driver.keras_learn()           # 학습
-    
+        # self.cnn_driver.keras_learn()           # 학습
+        self.cnn_driver.load_model()            # 모델 가져오기
+        
     def rc_car_control(self, direction):
         # calculate left and right wheel speed with direction
         
